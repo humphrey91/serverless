@@ -34,3 +34,5 @@ functions:
   --path-template='' \
   --method='POST' \
   --body='{"content":"hello world","attachment":"hello.jpg"}'
+
+fix
