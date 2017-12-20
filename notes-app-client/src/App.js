@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Nav, NavItem, Navbar } from "react-bootstrap";
 import "./App.css";
 import Routes from "./Routes";
 import RouteNavItem from "./components/RouteNavItem";
-import { authUser, signOutUser } from "./libs/awsLib";
+import { authUser, signOutUser } from "./libs/awsLib"
+;
 
 class App extends Component {
 
   constructor(props) {
-  super(props);
+    super(props);
 
     this.state = {
-      isAuthenticated: false,
-      isAuthenticating: true
+      isLoading: false,
+      email: "",
+      password: ""
     };
   }
   async componentDidMount() {
@@ -36,6 +38,8 @@ class App extends Component {
     signOutUser();
 
     this.userHasAuthenticated(false);
+    this.props.history.push("/login");
+
   }
 
   render() {
@@ -57,7 +61,10 @@ class App extends Component {
           <Navbar.Collapse>
             <Nav pullRight>
               {this.state.isAuthenticated
-                ? <NavItem onClick={this.handleLogout}>Logout</NavItem>
+                ? [
+                  <RouteNavItem key={1} href="/notes/new">NewNote</RouteNavItem>,
+                  <NavItem key={2} onClick={this.handleLogout}>Logout</NavItem>
+                ]
                 : [
                     <RouteNavItem key={1} href="/signup">
                       Signup
@@ -75,5 +82,4 @@ class App extends Component {
   }
 }
 
-
-export default App;
+export default withRouter(App);
